@@ -23,7 +23,7 @@ jobs:
           docker container run --network learntf \
             -v $(pwd)/postman_collections:/etc/newman -t postman/newman run /etc/newman/Postgrest.json
       - tf/destroy:
-          var: 'postgresdb_container_mount_source=dummy'
+          var: 'postgresdb_container_mount_source=/home/circleci/project/postgres/init'
 
 workflows:
   main:
