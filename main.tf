@@ -5,6 +5,11 @@ terraform {
       version = "~> 2.22.0"
     }
   }
+
+  backend "gcs" {
+    bucket  = "ktwl-tf-backend"
+    prefix  = "github.com/kelvintaywl/tf/state"
+  }
 }
 
 provider "docker" {}
