@@ -7,8 +7,8 @@ terraform {
   }
 
   backend "gcs" {
-    bucket  = "ktwl-tf-backend"
-    prefix  = "github.com/kelvintaywl/tf/state"
+    bucket = "ktwl-tf-backend"
+    prefix = "github.com/kelvintaywl/tf/state"
   }
 }
 
