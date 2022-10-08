@@ -1,3 +1,4 @@
+# TODO: try adding validation (e.g., port numbers must be >= 1)
 variable "postgresdb_image" {
   description = "Docker image name for postgresdb"
   type        = string
