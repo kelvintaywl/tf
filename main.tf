@@ -5,7 +5,8 @@ terraform {
       version = "~> 2.22.0"
     }
   }
-
+  # TODO: switch backend to Terraform Cloud since
+  # Terraform Cloud is free (up to 5 users)
   backend "gcs" {
     bucket = "ktwl-tf-backend"
     prefix = "github.com/kelvintaywl/tf/state"
