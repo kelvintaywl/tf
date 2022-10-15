@@ -3,30 +3,22 @@ version: 2.1
 orbs:
   tf: circleci/terraform@3.1.0
 
+executors:
+  tf:
+    resource_class: kelvintaywl/cntr-agent-orange
+    docker:
+      - image: hashicorp/terraform
+        entrypoint: /bin/sh
+
 jobs:
-  tf-test:
-    machine:
-      image: ubuntu-2204:2022.07.1
-    resource_class: medium
+  tf-containter-runner:
+    executor: tf
     steps:
       - checkout
-      - tf/install:
-          terraform_version: '1.3.1'
       - run: |
-          echo $GOOGLE_SERVICE_KEY | base64 -d > creds.json
-          echo "export GOOGLE_APPLICATION_CREDENTIALS=/home/circleci/project/creds.json" >> $BASH_ENV
-      - tf/init
-      - tf/fmt
-      - tf/validate
-      - tf/apply:
-          var: 'postgresdb_container_mount_source=/home/circleci/project/postgres/init'
-      - run: |
-          docker ps
-
-          docker container run --network learntf \
-            -v $(pwd)/postman_collections:/etc/newman -t postman/newman run /etc/newman/Postgrest.json
+          terraform version
 
 workflows:
   main:
     jobs:
-      - tf-test
+      - tf-containter-runner
