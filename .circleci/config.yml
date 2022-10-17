@@ -11,9 +11,10 @@ executors:
         entrypoint: /bin/sh
 
 jobs:
-  tf-containter-runner:
+  tf-container-runner:
     executor: tf
     steps:
+      - run: ls
       - checkout
       - run: |
           terraform version
@@ -21,4 +22,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - tf-containter-runner
+      - tf-container-runner
