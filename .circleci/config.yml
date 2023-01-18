@@ -1,32 +1,30 @@
 version: 2.1
 
 orbs:
-  tf: circleci/terraform@3.1.0
+  tf: circleci/terraform@3.2.0
 
+executors:
+  basic:
+    docker:
+      - image: cimg/base:current
+    resource_class: medium
 jobs:
   tf-test:
-    machine:
-      image: ubuntu-2204:2022.07.1
-    resource_class: medium
+    parameters:
+      exec:
+        type: executor
+    executor: <<parameters.exec>>
     steps:
       - checkout
       - tf/install:
           terraform_version: '1.3.1'
-      - run: |
-          echo $GOOGLE_SERVICE_KEY | base64 -d > creds.json
-          echo "export GOOGLE_APPLICATION_CREDENTIALS=/home/circleci/project/creds.json" >> $BASH_ENV
-      - tf/init
-      - tf/fmt
-      - tf/validate
-      - tf/apply:
-          var: 'postgresdb_container_mount_source=/home/circleci/project/postgres/init'
-      - run: |
-          docker ps
-
-          docker container run --network learntf \
-            -v $(pwd)/postman_collections:/etc/newman -t postman/newman run /etc/newman/Postgrest.json
 
 workflows:
   main:
     jobs:
-      - tf-test
+      - tf-test:
+          matrix:
+            parameters:
+              exec:
+                - basic
+                - tf/default
